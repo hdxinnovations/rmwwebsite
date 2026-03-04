@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Employee Management - RMW ERP</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI;}
+body{background:#0b0f19;color:#fff;display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{
+width:220px;
+background:#111827;
+padding:20px;
+}
+.sidebar a{
+display:block;
+color:#ccc;
+padding:12px;
+text-decoration:none;
+border-radius:6px;
+margin-bottom:6px;
+}
+.sidebar a:hover{background:#1f2937;color:#fff}
+
+/* MAIN */
+.main{flex:1;padding:25px}
+h1{margin-bottom:20px}
+
+/* FORM */
+.form{
+background:#111827;
+padding:20px;
+border-radius:10px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:12px;
+margin-bottom:25px;
+}
+
+input{
+padding:10px;
+border:none;
+border-radius:6px;
+}
+
+button{
+padding:8px 12px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+.add{background:#16a34a;color:#fff}
+.attend{background:#2563eb;color:#fff}
+.advance{background:#f59e0b;color:#fff}
+.delete{background:#dc2626;color:#fff}
+
+/* TABLE */
+table{
+width:100%;
+border-collapse:collapse;
+background:#111827;
+border-radius:10px;
+overflow:hidden;
+}
+
+th,td{
+padding:10px;
+border-bottom:1px solid #222;
+text-align:center;
+font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+<h3>RMW ERP</h3>
+<a href="rmwerp.html">Dashboard</a>
+<a href="invoice-portal.html">Billing</a>
+<a href="index3.html">Delivery Challan</a>
+<!-- <a href="erp.html">ERP Panel</a>
+ <a href="#">Reports</a> -->
+<a href="products.html">Products</a>
+<a href="customers.html">Customers</a>
+<a href="expenses.html">Personal Expenses</a>
+<a href="product-buying.html">Product Expenses</a>
+<a href="employees.html">Employees Page</a>
+</div>
+
+<div class="main">
+<h1>Employee Management</h1>
+
+<div class="form">
+<input id="empName" placeholder="Employee Name">
+<input id="empMobile" placeholder="Mobile">
+<input id="empCity" placeholder="City">
+<button class="add" onclick="addEmployee()">Add Employee</button>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Mobile</th>
+<th>City</th>
+<th>Today</th>
+<th>Total Days</th>
+<th>Advance ₹</th>
+<th>Add Advance</th>
+<th>X</th>
+</tr>
+</thead>
+<tbody id="empTable"></tbody>
+</table>
+
+</div>
+
+<script>
+
+let employees = JSON.parse(localStorage.getItem("employees")||"[]");
+
+/* ===== MONTH RESET ===== */
+
+let currentMonth = new Date().getMonth();
+let savedMonth = localStorage.getItem("empMonth");
+
+if(savedMonth != currentMonth){
+employees.forEach(e=>{
+e.days = 0;
+e.advanceHistory = [];
+});
+localStorage.setItem("empMonth", currentMonth);
+localStorage.setItem("employees", JSON.stringify(employees));
+}
+
+/* ===== SAVE ===== */
+function save(){
+localStorage.setItem("employees", JSON.stringify(employees));
+render();
+}
+
+/* ===== ADD EMPLOYEE ===== */
+function addEmployee(){
+
+let name = document.getElementById("empName").value;
+let mobile = document.getElementById("empMobile").value;
+let city = document.getElementById("empCity").value;
+
+if(!name){
+alert("Enter employee name");
+return;
+}
+
+employees.push({
+name:name,
+mobile:mobile,
+city:city,
+days:0,
+advanceHistory:[],
+lastDate:""
+});
+
+save();
+
+document.getElementById("empName").value="";
+document.getElementById("empMobile").value="";
+document.getElementById("empCity").value="";
+}
+
+/* ===== ATTENDANCE ===== */
+function markPresent(i){
+
+let today = new Date().toDateString();
+
+if(employees[i].lastDate === today){
+alert("Already marked today");
+return;
+}
+
+employees[i].days++;
+employees[i].lastDate = today;
+
+save();
+}
+
+/* ===== ADD ADVANCE ===== */
+function addAdvance(i){
+
+let amt = prompt("Enter advance amount:");
+if(!amt) return;
+
+let today = new Date().toLocaleDateString();
+
+employees[i].advanceHistory.push({
+date: today,
+amount: parseFloat(amt)
+});
+
+save();
+}
+
+/* ===== DELETE ===== */
+function del(i){
+if(confirm("Delete employee?")){
+employees.splice(i,1);
+save();
+}
+}
+
+/* ===== RENDER ===== */
+function render(){
+
+let html="";
+
+employees.forEach((e,i)=>{
+
+let today = new Date().toDateString();
+let disabled = e.lastDate === today ? "disabled" : "";
+
+html+=`
+<tr>
+<td>${e.name}</td>
+<td>${e.mobile}</td>
+<td>${e.city}</td>
+
+<td>
+<button class="attend" ${disabled} onclick="markPresent(${i})">
+${disabled ? "Marked" : "Present"}
+</button>
+</td>
+
+<td>${e.days}</td>
+<td>
+${e.advanceHistory.length === 0 
+? "No Advance" 
+: e.advanceHistory.map(a => 
+`${a.date} - ₹ ${a.amount}`
+).join("<br>")
+}
+</td>
+
+<td>
+<button class="advance" onclick="addAdvance(${i})">+</button>
+</td>
+
+<td>
+<button class="delete" onclick="del(${i})">X</button>
+</td>
+
+</tr>
+`;
+
+});
+
+document.getElementById("empTable").innerHTML = html;
+}
+
+function getTotalAdvance(emp){
+let total = 0;
+emp.advanceHistory.forEach(a=>{
+total += a.amount;
+});
+return total;
+}
+
+render();
+
+</script>
+
+</body>
+</html>

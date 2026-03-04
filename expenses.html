@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Expenses - RMW ERP</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI",Arial;}
+body{background:#0b0f19;color:#fff;display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{
+width:240px;
+background:#111827;
+padding:20px;
+}
+.sidebar a{
+display:block;
+padding:12px;
+color:#ccc;
+text-decoration:none;
+border-radius:6px;
+margin-bottom:6px;
+}
+.sidebar a:hover{background:#1f2937;color:#fff}
+
+/* MAIN */
+.main{flex:1;padding:25px}
+
+h1{margin-bottom:20px}
+
+/* FORM */
+.form{
+background:#111827;
+padding:20px;
+border-radius:10px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:15px;
+margin-bottom:20px;
+}
+
+input{
+padding:10px;
+border:none;
+border-radius:6px;
+}
+
+button{
+padding:10px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+.add{background:#16a34a;color:#fff}
+
+/* TABLE */
+table{
+width:100%;
+border-collapse:collapse;
+background:#111827;
+border-radius:10px;
+overflow:hidden;
+}
+
+th,td{
+padding:12px;
+border-bottom:1px solid #222;
+}
+
+.delete{background:#dc2626;color:#fff}
+
+/* TOTAL BOX */
+.total-box{
+margin-top:20px;
+background:#111827;
+padding:20px;
+border-radius:10px;
+display:flex;
+gap:30px;
+}
+
+.total-box div{
+font-size:18px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+<h3>RMW ERP</h3>
+<a href="rmwerp.html">Dashboard</a>
+<a href="invoice-portal.html">Billing</a>
+<a href="index3.html">Delivery Challan</a>
+<!-- <a href="erp.html">ERP Panel</a>
+ <a href="#">Reports</a> -->
+<a href="products.html">Products</a>
+<a href="customers.html">Customers</a>
+<a href="expenses.html">Personal Expenses</a>
+<a href="product-buying.html">Product Expenses</a>
+<a href="employees.html">Employees Page</a>
+</div>
+
+<div class="main">
+<h1>Daily Company Expenses</h1>
+
+<!-- FORM -->
+<div class="form">
+<input type="date" id="date">
+<input type="text" id="purpose" placeholder="Purpose">
+<input type="number" id="amount" placeholder="Amount">
+<button class="add" onclick="addExpense()">Add</button>
+</div>
+
+<!-- TABLE -->
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Purpose</th>
+<th>Amount</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="expenseTable"></tbody>
+</table>
+
+<!-- TOTAL -->
+<div class="total-box">
+<div>Today's Total: ₹<span id="todayTotal">0</span></div>
+<div>Monthly Total: ₹<span id="monthTotal">0</span></div>
+</div>
+
+</div>
+
+<script>
+let expenses = JSON.parse(localStorage.getItem("expenses")||"[]");
+
+function save(){
+localStorage.setItem("expenses",JSON.stringify(expenses));
+render();
+}
+
+function addExpense(){
+
+const date=document.getElementById("date").value;
+const purpose=document.getElementById("purpose").value;
+const amount=parseFloat(document.getElementById("amount").value);
+
+if(!date || !amount) return alert("Fill all fields");
+
+expenses.push({date,purpose,amount});
+save();
+
+document.getElementById("purpose").value="";
+document.getElementById("amount").value="";
+}
+
+function del(i){
+expenses.splice(i,1);
+save();
+}
+
+function render(){
+
+let html="";
+let today=new Date().toISOString().slice(0,10);
+let todayTotal=0;
+let monthTotal=0;
+
+expenses.forEach((e,i)=>{
+
+html+=`
+<tr>
+<td>${e.date}</td>
+<td>${e.purpose}</td>
+<td>₹${e.amount}</td>
+<td><button class="delete" onclick="del(${i})">Delete</button></td>
+</tr>
+`;
+
+if(e.date===today) todayTotal+=e.amount;
+
+let month=new Date().getMonth();
+let eMonth=new Date(e.date).getMonth();
+if(month===eMonth) monthTotal+=e.amount;
+
+});
+
+document.getElementById("expenseTable").innerHTML=html;
+document.getElementById("todayTotal").innerText=todayTotal;
+document.getElementById("monthTotal").innerText=monthTotal;
+}
+
+render();
+</script>
+
+</body>
+</html>

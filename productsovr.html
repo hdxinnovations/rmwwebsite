@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Product Overview | Raja Machine Works</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:
+radial-gradient(circle at 20% 20%, rgba(249,115,22,0.08), transparent 40%),
+linear-gradient(180deg,#111827,#1e293b);
+color:#e5e7eb;
+padding-top:80px;
+}
+
+/* NAVBAR */
+
+.navbar{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+background:linear-gradient(135deg,#0f172a,#111827);
+z-index:1000;
+box-shadow:0 4px 20px rgba(0,0,0,0.4);
+}
+
+.nav-container{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 20px;
+}
+
+.nav-left{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.nav-logo{
+width:40px;
+}
+
+.nav-title{
+font-size:18px;
+font-weight:600;
+}
+
+.nav-menu{
+display:flex;
+gap:25px;
+}
+
+.nav-menu a{
+text-decoration:none;
+color:#e5e7eb;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active{
+color:#f97316;
+}
+
+/* HERO */
+
+.products-hero{
+text-align:center;
+padding:70px 20px 40px;
+}
+
+.products-hero h1{
+font-size:clamp(30px,6vw,48px);
+margin-bottom:15px;
+}
+
+.products-hero p{
+max-width:800px;
+margin:auto;
+color:#cbd5e1;
+line-height:1.6;
+}
+
+/* FEATURED PRODUCT */
+
+.featured-product{
+max-width:1200px;
+margin:auto;
+padding:40px 20px;
+display:grid;
+grid-template-columns:1fr;
+gap:30px;
+align-items:center;
+}
+
+.featured-img{
+background:#1e293b;
+height:280px;
+border-radius:10px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:60px;
+color:#f97316;
+}
+
+.featured-content h2{
+font-size:28px;
+margin-bottom:15px;
+}
+
+.featured-content p{
+color:#cbd5e1;
+line-height:1.6;
+}
+
+/* ZIG ZAG PRODUCTS */
+
+.product-section{
+max-width:1200px;
+margin:auto;
+padding:60px 20px;
+display:grid;
+grid-template-columns:1fr;
+gap:50px;
+}
+
+.product-row{
+display:grid;
+grid-template-columns:1fr;
+gap:30px;
+align-items:center;
+}
+
+.product-img{
+background:#1e293b;
+height:220px;
+border-radius:10px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:50px;
+color:#f97316;
+}
+
+.product-content h3{
+font-size:24px;
+margin-bottom:10px;
+}
+
+.product-content p{
+color:#cbd5e1;
+line-height:1.6;
+}
+
+/* ANCILLARY GRID */
+
+.ancillary{
+max-width:1200px;
+margin:auto;
+padding:60px 20px;
+}
+
+.ancillary h2{
+text-align:center;
+margin-bottom:40px;
+font-size:30px;
+}
+
+.ancillary-grid{
+display:grid;
+grid-template-columns:1fr;
+gap:20px;
+}
+
+.ancillary-card{
+background:#1e293b;
+padding:25px;
+border-radius:8px;
+text-align:center;
+transition:0.3s;
+}
+
+.ancillary-card:hover{
+transform:translateY(-6px);
+box-shadow:0 0 20px rgba(249,115,22,0.5);
+}
+
+/* RESPONSIVE */
+
+@media(min-width:768px){
+
+.featured-product{
+grid-template-columns:1fr 1fr;
+}
+
+.product-row{
+grid-template-columns:1fr 1fr;
+}
+
+.product-row.reverse{
+direction:rtl;
+}
+
+.product-row.reverse .product-content{
+direction:ltr;
+}
+
+.ancillary-grid{
+grid-template-columns:repeat(3,1fr);
+}
+
+}
+
+@media(min-width:1100px){
+
+.ancillary-grid{
+grid-template-columns:repeat(4,1fr);
+}
+
+.ancillary-card{
+background:#1e293b;
+padding:25px;
+border-radius:8px;
+text-align:center;
+transition:0.3s;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:10px;
+}
+
+.anc-icon{
+font-size:30px;
+color:#f97316;
+}
+
+.ancillary-card p{
+margin:0;
+font-size:15px;
+color:#e5e7eb;
+}
+
+.ancillary-card:hover{
+transform:translateY(-6px);
+box-shadow:0 0 20px rgba(249,115,22,0.5);
+}
+
+}
+
+/* FOOTER */
+
+footer{
+background:#0f172a;
+text-align:center;
+padding:20px;
+margin-top:40px;
+color:#94a3b8;
+}
+
+/* NAVBAR */
+
+.navbar{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+background:linear-gradient(135deg,#0f172a,#111827);
+z-index:1000;
+box-shadow:0 4px 20px rgba(0,0,0,0.4);
+}
+
+.nav-container{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 20px;
+}
+
+.nav-left{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.nav-logo{
+width:40px;
+}
+
+.nav-title{
+font-size:18px;
+font-weight:600;
+color:white;
+}
+
+/* NAV MENU */
+
+.nav-menu{
+display:flex;
+gap:25px;
+}
+
+.nav-menu a{
+text-decoration:none;
+color:#e5e7eb;
+transition:0.3s;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active{
+color:#f97316;
+}
+
+/* HAMBURGER */
+
+.hamburger{
+display:none;
+flex-direction:column;
+cursor:pointer;
+gap:5px;
+}
+
+.hamburger span{
+width:25px;
+height:3px;
+background:white;
+border-radius:3px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.hamburger{
+display:flex;
+}
+
+.nav-menu{
+position:absolute;
+top:70px;
+left:0;
+width:100%;
+background:#0f172a;
+flex-direction:column;
+align-items:center;
+gap:20px;
+padding:20px;
+display:none;
+}
+
+.nav-menu.active{
+display:flex;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<header class="navbar">
+<div class="nav-container">
+
+<div class="nav-left">
+<img src="logo.png" class="nav-logo">
+<span class="nav-title">Raja Machine Works</span>
+</div>
+
+<!-- HAMBURGER -->
+<div class="hamburger" id="hamburger">
+<span></span>
+<span></span>
+<span></span>
+</div>
+
+<nav class="nav-menu" id="navMenu">
+<a href="index.html">Home</a>
+<a href="about.html">About Us</a>
+<a href="login.html">RMW ERP</a>
+<a href="productsovr.html" class="active">Product Overview</a>
+<a href="features.html">Features</a>
+<a href="location.html">Location</a>
+<a href="contact.html">Contact Us</a>
+</nav>
+
+</div>
+</header>
+
+
+<section class="products-hero">
+
+<h1>Product Overview</h1>
+
+<p>
+In our product basket we offer multiple machine models designed for twisting
+and doubling industries. Each machine is engineered for high productivity,
+precision and durability.
+</p>
+
+</section>
+
+
+<section class="featured-product">
+
+<div class="featured-img">⚙</div>
+
+<div class="featured-content">
+<h2>Ring Doublers</h2>
+<p>
+High-performance doubling machines widely used in textile and plastic industries.
+Designed for high RPM operation, excellent yarn quality and reliable long-term operation.
+</p>
+</div>
+
+</section>
+
+
+<section class="product-section">
+
+<div class="product-row reverse">
+
+<div class="product-img">🏭</div>
+
+<div class="product-content">
+<h3>Heavy Ring Twister</h3>
+<p>
+Designed for heavy denier yarn and rope twisting applications with consistent
+performance, high durability and industrial productivity.
+</p>
+</div>
+
+</div>
+
+
+<div class="product-row">
+
+<div class="product-img">🔩</div>
+
+<div class="product-content">
+<h3>Ring Doubler Combo Machine</h3>
+<p>
+Compact twisting solution providing primary and secondary twisting in one machine,
+reducing power consumption and improving productivity.
+</p>
+</div>
+
+</div>
+
+
+<div class="product-row reverse">
+
+<div class="product-img">🧵</div>
+
+<div class="product-content">
+<h3>Online Ring Winder</h3>
+<p>
+Used for twisting and winding fibers directly from the extrusion process,
+reducing waste and increasing production efficiency.
+</p>
+</div>
+
+</div>
+
+
+<div class="product-row">
+
+<div class="product-img">🔧</div>
+
+<div class="product-content">
+<h3>Online Ring Twister</h3>
+<p>
+Primarily used in rope twisting and baler twine production with lower
+maintenance and improved productivity.
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+<section class="ancillary">
+
+<h2>Ancillary Products</h2>
+
+<div class="ancillary-grid">
+
+<div class="ancillary-card">
+<span class="anc-icon">🧵</span>
+<p>Bobbin Winder</p>
+</div>
+
+<div class="ancillary-card">
+<span class="anc-icon">🧶</span>
+<p>Cheese Winder</p>
+</div>
+
+<div class="ancillary-card">
+<span class="anc-icon">🏗️</span>
+<p>Creel Stand</p>
+</div>
+
+<div class="ancillary-card">
+<span class="anc-icon">📦</span>
+<p>Raw Material Bobbins</p>
+</div>
+
+<div class="ancillary-card">
+<span class="anc-icon">⚙️</span>
+<p>ABS Bobbins</p>
+</div>
+
+<div class="ancillary-card">
+<span class="anc-icon">🔩</span>
+<p>MS Bobbins</p>
+</div>
+
+<div class="ancillary-card">
+<span class="anc-icon">🔄</span>
+<p>Ring Travelers</p>
+</div>
+
+</div>
+
+</section>
+
+
+<footer>
+© 2025 Raja Machine Works. All Rights Reserved.
+</footer>
+
+<script>
+
+const hamburger = document.getElementById("hamburger");
+const navMenu = document.getElementById("navMenu");
+
+hamburger.addEventListener("click",function(){
+
+navMenu.classList.toggle("active");
+
+});
+
+</script>
+</body>
+</html>

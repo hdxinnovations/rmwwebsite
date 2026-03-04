@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Features | Raja Machine Works</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:
+radial-gradient(circle at 20% 20%, rgba(249,115,22,0.08), transparent 40%),
+linear-gradient(180deg,#111827,#1e293b);
+color:#e5e7eb;
+padding-top:80px;
+}
+
+/* NAVBAR */
+
+.navbar{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+background:linear-gradient(135deg,#0f172a,#111827);
+z-index:1000;
+box-shadow:0 4px 20px rgba(0,0,0,0.4);
+}
+
+.nav-container{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 20px;
+}
+
+.nav-left{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.nav-logo{
+width:40px;
+}
+
+.nav-title{
+font-size:18px;
+font-weight:600;
+}
+
+.nav-menu{
+display:flex;
+gap:25px;
+}
+
+.nav-menu a{
+text-decoration:none;
+color:#e5e7eb;
+transition:0.3s;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active{
+color:#f97316;
+}
+
+/* HERO */
+
+.features-hero{
+text-align:center;
+padding:70px 20px 40px;
+}
+
+.features-hero h1{
+font-size:clamp(28px,6vw,46px);
+margin-bottom:10px;
+}
+
+.features-hero p{
+color:#cbd5e1;
+}
+
+/* SNAKE CONTAINER */
+
+.features-container{
+max-width:1000px;
+margin:auto;
+padding:40px 20px;
+position:relative;
+}
+
+/* CENTER PATH LINE */
+
+.features-container::before{
+content:"";
+position:absolute;
+left:50%;
+top:0;
+width:4px;
+height:100%;
+background:#f97316;
+opacity:0.4;
+transform:translateX(-50%);
+}
+
+/* FEATURE ROW */
+
+.feature-row{
+display:flex;
+align-items:center;
+margin:60px 0;
+position:relative;
+}
+
+/* LEFT CONTENT */
+
+.feature-row.left{
+justify-content:flex-start;
+}
+
+/* RIGHT CONTENT */
+
+.feature-row.right{
+justify-content:flex-end;
+}
+
+/* FEATURE CARD */
+
+.feature-card{
+width:420px;
+background:#1e293b;
+padding:25px;
+border-radius:10px;
+box-shadow:0 8px 25px rgba(0,0,0,0.4);
+display:flex;
+gap:15px;
+align-items:flex-start;
+transition:0.4s;
+}
+
+.feature-card:hover{
+transform:translateY(-8px);
+box-shadow:0 0 20px rgba(249,115,22,0.6);
+}
+
+.feature-icon{
+font-size:26px;
+color:#f97316;
+}
+
+.feature-text{
+line-height:1.6;
+}
+
+/* CONNECTOR DOT */
+
+.connector{
+position:absolute;
+left:50%;
+width:18px;
+height:18px;
+background:#f97316;
+border-radius:50%;
+transform:translateX(-50%);
+}
+
+/* FOOTER */
+
+footer{
+background:#0f172a;
+text-align:center;
+padding:20px;
+margin-top:40px;
+font-size:14px;
+color:#94a3b8;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.features-container::before{
+left:20px;
+}
+
+.feature-row{
+justify-content:flex-start !important;
+padding-left:40px;
+}
+
+.connector{
+left:20px;
+}
+
+.feature-card{
+width:100%;
+}
+
+}
+
+/* NAVBAR */
+
+.navbar{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+background:linear-gradient(135deg,#0f172a,#111827);
+z-index:1000;
+box-shadow:0 4px 20px rgba(0,0,0,0.4);
+}
+
+.nav-container{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 20px;
+}
+
+.nav-left{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.nav-logo{
+width:40px;
+}
+
+.nav-title{
+font-size:18px;
+font-weight:600;
+color:white;
+}
+
+/* NAV MENU */
+
+.nav-menu{
+display:flex;
+gap:25px;
+}
+
+.nav-menu a{
+text-decoration:none;
+color:#e5e7eb;
+transition:0.3s;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active{
+color:#f97316;
+}
+
+/* HAMBURGER */
+
+.hamburger{
+display:none;
+flex-direction:column;
+cursor:pointer;
+gap:5px;
+}
+
+.hamburger span{
+width:25px;
+height:3px;
+background:white;
+border-radius:3px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.hamburger{
+display:flex;
+}
+
+.nav-menu{
+position:absolute;
+top:70px;
+left:0;
+width:100%;
+background:#0f172a;
+flex-direction:column;
+align-items:center;
+gap:20px;
+padding:20px;
+display:none;
+}
+
+.nav-menu.active{
+display:flex;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<header class="navbar">
+<div class="nav-container">
+
+<div class="nav-left">
+<img src="logo.png" class="nav-logo">
+<span class="nav-title">Raja Machine Works</span>
+</div>
+
+<!-- HAMBURGER -->
+<div class="hamburger" id="hamburger">
+<span></span>
+<span></span>
+<span></span>
+</div>
+
+<nav class="nav-menu" id="navMenu">
+<a href="index.html">Home</a>
+<a href="about.html">About Us</a>
+<a href="login.html">RMW ERP</a>
+<a href="productsovr.html">Product Overview</a>
+<a href="features.html" class="active">Features</a>
+<a href="location.html">Location</a>
+<a href="contact.html">Contact Us</a>
+</nav>
+
+</div>
+</header>
+
+
+<section class="features-hero">
+
+<h1>Machine Features</h1>
+<p>Advanced Engineering for High Productivity & Performance</p>
+
+</section>
+
+
+<section class="features-container">
+
+<div class="feature-row left">
+<div class="connector"></div>
+<div class="feature-card">
+<div class="feature-icon">⚙</div>
+<div class="feature-text">
+Effective machine complete design with ready-to-use structures at your factory with no need for reassembly.
+</div>
+</div>
+</div>
+
+<div class="feature-row right">
+<div class="connector"></div>
+<div class="feature-card">
+<div class="feature-icon">🚀</div>
+<div class="feature-text">
+Optimum production performance and easy machine operation.
+</div>
+</div>
+</div>
+
+<div class="feature-row left">
+<div class="connector"></div>
+<div class="feature-card">
+<div class="feature-icon">🔩</div>
+<div class="feature-text">
+Two-line roller system with hard chromium plating.
+</div>
+</div>
+</div>
+
+<div class="feature-row right">
+<div class="connector"></div>
+<div class="feature-card">
+<div class="feature-icon">💻</div>
+<div class="feature-text">
+TPM settings can be changed by PLC & HMI control or AC drive system instead of manual gear change.
+</div>
+</div>
+</div>
+
+<div class="feature-row left">
+<div class="connector"></div>
+<div class="feature-card">
+<div class="feature-icon">⚖</div>
+<div class="feature-text">
+Uniform counterbalancing ensures smooth machine operation.
+</div>
+</div>
+</div>
+
+<div class="feature-row right">
+<div class="connector"></div>
+<div class="feature-card">
+<div class="feature-icon">🔄</div>
+<div class="feature-text">
+Reversible drive used for both S and Z twisting.
+</div>
+</div>
+</div>
+
+<div class="feature-row left">
+<div class="connector"></div>
+<div class="feature-card">
+<div class="feature-icon">🎯</div>
+<div class="feature-text">
+Pace-tensioning telescopic jockey pulley mechanism.
+</div>
+</div>
+</div>
+
+<div class="feature-row right">
+<div class="connector"></div>
+<div class="feature-card">
+<div class="feature-icon">🔇</div>
+<div class="feature-text">
+Low noise operation with reduced power consumption.
+</div>
+</div>
+</div>
+
+<div class="feature-row left">
+<div class="connector"></div>
+<div class="feature-card">
+<div class="feature-icon">🧵</div>
+<div class="feature-text">
+Best yarn quality with high productivity.
+</div>
+</div>
+</div>
+
+<div class="feature-row right">
+<div class="connector"></div>
+<div class="feature-card">
+<div class="feature-icon">🏗</div>
+<div class="feature-text">
+Complete powder-coated heavy duty machine structure.
+</div>
+</div>
+</div>
+
+</section>
+
+
+<footer>
+© 2025 Raja Machine Works. All Rights Reserved.
+</footer>
+
+<script>
+
+const hamburger = document.getElementById("hamburger");
+const navMenu = document.getElementById("navMenu");
+
+hamburger.addEventListener("click",function(){
+
+navMenu.classList.toggle("active");
+
+});
+
+</script>
+</body>
+</html>

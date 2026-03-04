@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Contact Us | Raja Machine Works</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:
+radial-gradient(circle at 20% 20%, rgba(249,115,22,0.08), transparent 40%),
+linear-gradient(180deg,#111827,#1e293b);
+color:#e5e7eb;
+padding-top:80px;
+}
+
+/* NAVBAR */
+
+.navbar{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+background:linear-gradient(135deg,#0f172a,#111827);
+z-index:1000;
+box-shadow:0 4px 20px rgba(0,0,0,0.4);
+}
+
+.nav-container{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 20px;
+}
+
+.nav-left{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.nav-logo{
+width:40px;
+}
+
+.nav-title{
+font-size:18px;
+font-weight:600;
+}
+
+.nav-menu{
+display:flex;
+gap:25px;
+}
+
+.nav-menu a{
+text-decoration:none;
+color:#e5e7eb;
+transition:0.3s;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active{
+color:#f97316;
+}
+
+/* HERO */
+
+.contact-hero{
+text-align:center;
+padding:70px 20px 40px;
+}
+
+.contact-hero h1{
+font-size:clamp(28px,6vw,46px);
+margin-bottom:10px;
+}
+
+.contact-hero p{
+color:#cbd5e1;
+}
+
+/* CONTACT SECTION */
+
+.contact-section{
+max-width:1100px;
+margin:auto;
+padding:40px 20px;
+display:grid;
+grid-template-columns:1fr;
+gap:40px;
+}
+
+/* CONTACT INFO */
+
+.contact-info{
+background:#1e293b;
+padding:30px;
+border-radius:10px;
+box-shadow:0 8px 25px rgba(0,0,0,0.4);
+}
+
+.contact-info h3{
+color:#f97316;
+margin-bottom:20px;
+}
+
+.contact-item{
+margin-bottom:18px;
+line-height:1.6;
+}
+
+.contact-item a{
+color:#f97316;
+text-decoration:none;
+}
+
+.contact-item a:hover{
+text-decoration:underline;
+}
+
+/* CONTACT FORM */
+
+.contact-form{
+background:#1e293b;
+padding:30px;
+border-radius:10px;
+box-shadow:0 8px 25px rgba(0,0,0,0.4);
+}
+
+.contact-form h3{
+color:#f97316;
+margin-bottom:20px;
+}
+
+.input-group{
+margin-bottom:15px;
+}
+
+.input-group input,
+.input-group textarea{
+width:100%;
+padding:10px;
+border:none;
+border-radius:5px;
+background:#111827;
+color:white;
+}
+
+textarea{
+resize:none;
+height:120px;
+}
+
+.submit-btn{
+background:#f97316;
+border:none;
+padding:12px 20px;
+border-radius:6px;
+cursor:pointer;
+font-weight:600;
+transition:0.3s;
+}
+
+.submit-btn:hover{
+background:#ea580c;
+}
+
+/* FOOTER */
+
+footer{
+background:#0f172a;
+text-align:center;
+padding:20px;
+margin-top:50px;
+font-size:14px;
+color:#94a3b8;
+}
+
+/* DESKTOP */
+
+@media(min-width:768px){
+
+.contact-section{
+grid-template-columns:1fr 1fr;
+}
+
+}
+
+/* NAVBAR */
+
+.navbar{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+background:linear-gradient(135deg,#0f172a,#111827);
+z-index:1000;
+box-shadow:0 4px 20px rgba(0,0,0,0.4);
+}
+
+.nav-container{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 20px;
+}
+
+.nav-left{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.nav-logo{
+width:40px;
+}
+
+.nav-title{
+font-size:18px;
+font-weight:600;
+color:white;
+}
+
+/* NAV MENU */
+
+.nav-menu{
+display:flex;
+gap:25px;
+}
+
+.nav-menu a{
+text-decoration:none;
+color:#e5e7eb;
+transition:0.3s;
+}
+
+.nav-menu a:hover,
+.nav-menu a.active{
+color:#f97316;
+}
+
+/* HAMBURGER */
+
+.hamburger{
+display:none;
+flex-direction:column;
+cursor:pointer;
+gap:5px;
+}
+
+.hamburger span{
+width:25px;
+height:3px;
+background:white;
+border-radius:3px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.hamburger{
+display:flex;
+}
+
+.nav-menu{
+position:absolute;
+top:70px;
+left:0;
+width:100%;
+background:#0f172a;
+flex-direction:column;
+align-items:center;
+gap:20px;
+padding:20px;
+display:none;
+}
+
+.nav-menu.active{
+display:flex;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<header class="navbar">
+<div class="nav-container">
+
+<div class="nav-left">
+<img src="logo.png" class="nav-logo">
+<span class="nav-title">Raja Machine Works</span>
+</div>
+
+<!-- HAMBURGER -->
+<div class="hamburger" id="hamburger">
+<span></span>
+<span></span>
+<span></span>
+</div>
+
+<nav class="nav-menu" id="navMenu">
+<a href="index.html">Home</a>
+<a href="about.html">About Us</a>
+<a href="login.html">RMW ERP</a>
+<a href="productsovr.html">Product Overview</a>
+<a href="features.html">Features</a>
+<a href="location.html">Location</a>
+<a href="contact.html" class="active">Contact Us</a>
+</nav>
+
+</div>
+</header>
+
+
+<section class="contact-hero">
+<h1>Contact Us</h1>
+<p>Get in touch with Raja Machine Works</p>
+</section>
+
+
+<section class="contact-section">
+
+<div class="contact-info">
+
+<h3>Raja Machine Works</h3>
+
+<div class="contact-item">
+📞 <strong>Mr. Raja</strong><br>
+<a href="tel:+919790033522">+91 97900 33522</a>
+</div>
+
+<div class="contact-item">
+💬 <strong>WhatsApp</strong><br>
+<a href="https://wa.me/919790033522" target="_blank">
+Chat on WhatsApp
+</a>
+</div>
+
+<div class="contact-item">
+✉ <strong>Email</strong><br>
+<a href="mailto:rajamachineworks78@gmail.com">
+rajamachineworks78@gmail.com
+</a>
+<br>
+<a href="mailto:rajaero78@gmail.com">
+rajaero78@gmail.com
+</a>
+</div>
+
+</div>
+
+
+<div class="contact-form">
+
+<h3>Send Message</h3>
+
+<form onsubmit="sendMessage(event)">
+
+<div class="input-group">
+<input type="text" placeholder="Your Name" required>
+</div>
+
+<div class="input-group">
+<input type="email" placeholder="Your Email" required>
+</div>
+
+<div class="input-group">
+<textarea placeholder="Your Message" required></textarea>
+</div>
+
+<button class="submit-btn">Send Message</button>
+
+</form>
+
+</div>
+
+</section>
+
+
+<footer>
+© 2025 Raja Machine Works. All Rights Reserved.
+</footer>
+
+
+<script>
+
+function sendMessage(e){
+
+e.preventDefault();
+
+alert("Thank you! Your message has been received.");
+
+document.querySelector("form").reset();
+
+}
+
+</script>
+<script>
+
+const hamburger = document.getElementById("hamburger");
+const navMenu = document.getElementById("navMenu");
+
+hamburger.addEventListener("click",function(){
+
+navMenu.classList.toggle("active");
+
+});
+
+</script>
+</body>
+</html>

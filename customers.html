@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Company Ledger</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+
+/* LAYOUT */
+body{
+display:flex;
+min-height:100vh;
+background:#0b0f19;
+color:#fff;
+}
+
+/* SIDEBAR */
+.sidebar{
+width:240px;
+background:#111827;
+padding:20px;
+}
+
+.logo{
+font-size:20px;
+font-weight:bold;
+margin-bottom:20px;
+}
+
+.sidebar a{
+display:block;
+color:#ccc;
+padding:12px;
+text-decoration:none;
+border-radius:6px;
+margin-bottom:6px;
+}
+
+.sidebar a:hover{
+background:#1f2937;
+color:#fff;
+}
+
+/* MAIN */
+.main{
+flex:1;
+padding:30px;
+}
+
+/* FORM */
+input{
+width:100%;
+padding:10px;
+margin:8px 0;
+border-radius:6px;
+border:none;
+}
+
+button{
+padding:10px 14px;
+background:#16a34a;
+color:#fff;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+button:hover{
+opacity:0.9;
+}
+
+/* TABLE */
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+background:#111827;
+border-radius:8px;
+overflow:hidden;
+}
+
+th,td{
+padding:12px;
+border-bottom:1px solid #222;
+text-align:left;
+}
+
+.delete{
+background:#dc2626;
+padding:6px 10px;
+}
+
+.delete:hover{
+background:#b91c1c;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+body{flex-direction:column}
+.sidebar{width:100%;display:flex;overflow:auto}
+.sidebar a{flex:1;text-align:center}
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+<div class="logo">RMW ERP</div>
+<a href="rmwerp.html">Dashboard</a>
+<a href="invoice-portal.html">Billing</a>
+<a href="index3.html">Delivery Challan</a>
+<!-- <a href="erp.html">ERP Panel</a>
+ <a href="#">Reports</a> -->
+<a href="products.html">Products</a>
+<a href="customers.html">Customers</a>
+<a href="expenses.html">Personal Expenses</a>
+<a href="product-buying.html">Product Expenses</a>
+<a href="employees.html">Employees Page</a>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<h2>Company Ledger</h2>
+
+<input id="name" placeholder="Company Name">
+<input id="address" placeholder="Company Address">
+<input id="mobile" placeholder="Mobile Number">
+<input id="gst" placeholder="GST Number">
+
+<button onclick="addCompany()">Save Company</button>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Address</th>
+<th>Mobile</th>
+<th>GST</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="companyTable"></tbody>
+</table>
+
+</div>
+
+<script>
+let companies = JSON.parse(localStorage.getItem("companies")||"[]");
+
+function save(){
+localStorage.setItem("companies",JSON.stringify(companies));
+render();
+}
+
+function addCompany(){
+const name=document.getElementById("name").value;
+const address=document.getElementById("address").value;
+const mobile=document.getElementById("mobile").value;
+const gst=document.getElementById("gst").value;
+
+if(!name) return alert("Enter Company Name");
+
+companies.push({name,address,mobile,gst});
+save();
+// Update customer count in localStorage
+let count = parseInt(localStorage.getItem("customerCount") || 0);
+localStorage.setItem("customerCount", count + 1);
+
+document.getElementById("name").value="";
+document.getElementById("address").value="";
+document.getElementById("mobile").value="";
+document.getElementById("gst").value="";
+}
+
+function del(i){
+if(confirm("Delete company?")){
+companies.splice(i,1);
+save();
+}
+}
+
+let activities = JSON.parse(localStorage.getItem("activities") || "[]");
+
+activities.unshift({
+date: new Date().toLocaleDateString(),
+type: "Customer",
+details: "New customer added "
+});
+
+localStorage.setItem("activities", JSON.stringify(activities));
+function render(){
+let html="";
+companies.forEach((c,i)=>{
+html+=`
+<tr>
+<td>${c.name}</td>
+<td>${c.address}</td>
+<td>${c.mobile}</td>
+<td>${c.gst}</td>
+<td><button class="delete" onclick="del(${i})">Delete</button></td>
+</tr>`;
+});
+document.getElementById("companyTable").innerHTML=html;
+}
+
+render();
+</script>
+
+</body>
+</html>
