@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Raja Machine Works Invoice</title>
+<!-- PDF Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+
+<style>
+    body { font-family: Arial, sans-serif; background: #f8f8f8; margin: 0; padding: 0; }
+    .container { max-width: 900px; background: #fff; margin: 20px auto; padding: 20px 30px; border: 1px solid #000; position: relative; }
+    h2 { text-align: center; margin-bottom: 20px; font-size: 20px; text-transform: uppercase; }
+    .row { display: flex; gap: 20px; flex-wrap: wrap; }
+    .col { flex: 1; min-width: 250px; }
+    label { font-weight: bold; margin-top: 10px; display: block; }
+    input, textarea { width: 100%; padding: 6px; border: 1px solid #000; margin-top: 3px; font-size: 14px; resize: none; }
+    textarea { min-height: 80px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+    th, td { border: 1px solid #000; padding: 6px; text-align: left; }
+    th { background: #eaeaea; }
+    .totals { margin-top: 20px; max-width: 300px; margin-left: auto; border: 1px solid #000; padding: 10px; }
+    .totals p { display: flex; justify-content: space-between; margin: 5px 0; font-size: 14px; }
+    .grand-total { background: #eaeaea; font-weight: bold; padding: 5px; }
+    .btn-wrapper { text-align: center; margin-top: 20px; }
+    button { background: #000; color: #fff; border: none; padding: 8px 14px; font-size: 14px; cursor: pointer; transition: 0.3s; }
+    button:hover { background: #444; }
+    .delete-btn { background: red; color: white; border: none; padding: 4px 8px; cursor: pointer; font-size: 12px; }
+    .delete-btn:hover { background: darkred; }
+    .copy-type { position: absolute; top: 20px; right: 50px; font-size: 14px; }
+    .bank-details { margin-top: 20px; border: 1px solid #000; padding: 10px; }
+    .bank-details label { font-weight: bold; display: block; margin-top: 5px; }
+    .copy-type {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 10px;
+  position: absolute;
+  top: 20px;
+  right: 50px;
+}
+
+.copy-type label {
+  margin: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.date-wrapper{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.date-wrapper input{
+    flex:1;
+    min-width:140px;
+    padding:6px;
+    font-size:16px;
+}
+
+.back-btn{
+display:inline-block;
+margin-bottom:15px;
+background:#111827;
+color:#fff;
+padding:8px 14px;
+border-radius:6px;
+text-decoration:none;
+font-size:14px;
+}
+
+.back-btn:hover{
+background:#2563eb;
+}
+</style>
+</head>
+<body>
+<a href="invoice-portal.html" class="back-btn">← Back to Home</a>
+<div class="container">
+    <h2>Performa Invoice Generator</h2>
+    <div class="copy-type">
+  <label><input type="radio" name="copyType" value="Original" checked> Original</label>
+  <label><input type="radio" name="copyType" value="Duplicate"> Duplicate</label>
+  <label><input type="radio" name="copyType" value="Triplicate"> Triplicate</label>
+</div>
+
+    <div class="row">
+        <div class="col">
+            <label>Invoice No:</label>
+            <input id="invoiceNo" value="249">
+        </div>
+        <div class="col">
+            <td colspan="2">
+  <div class="date-wrapper">
+    <label>Date:</label>
+    <input type="date" id="invoiceDate">
+  </div>
+</td>
+        </div>
+    </div>
+
+    <div class="row">
+
+<div class="col">
+<label>Company Name:</label>
+<input id="companyName" placeholder="Enter company name">
+</div>
+
+<div class="col">
+<label>GST Number:</label>
+<input id="companyGST">
+</div>
+
+</div>
+
+<div class="row">
+    <div class="col">
+        <label>Bill To:</label>
+        <textarea id="billTo"></textarea>
+    </div>
+
+    <div class="col">
+        <label>Ship To:</label>
+        <textarea id="shipTo"></textarea>
+    </div>
+</div>
+
+    <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+  <div class="form-group" style="width: 300px; border: 1px solid #ccc; padding: 10px; border-radius: 4px;">
+    <div style="margin-bottom: 8px;">
+        <label for="transport" style="font-weight: bold;">Transport:</label><br>
+        <input id="transport" type="text" placeholder="Enter transport name" style="width: 100%; padding: 6px;">
+    </div>
+    <div style="margin-bottom: 8px;">
+        <label for="vehicleNo" style="font-weight: bold;">Vehicle No:</label><br>
+        <input id="vehicleNo" type="text" placeholder="Enter vehicle number" style="width: 100%; padding: 6px;">
+    </div>
+    <div style="margin-bottom: 8px;">
+        <label for="purchaseOrderNo" style="font-weight: bold;">Purchase Order No:</label><br>
+        <input id="purchaseOrderNo" type="text" placeholder="Enter purchase order number" style="width: 100%; padding: 6px;">
+    </div>
+    <div>
+        <label for="deliveryChallanNo" style="font-weight: bold;">Delivery Challan No:</label><br>
+        <input id="deliveryChallanNo" type="text" placeholder="Enter delivery challan number" style="width: 100%; padding: 6px;">
+    </div>
+  </div>
+</div>
+
+    <h3>Items</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>Description of Goods</th>
+            <th>HSN/SAC Code</th>
+            <th>Qty</th>
+            <th>Rate</th>
+            <th>Taxable Value</th>
+            <th>Tax %</th>
+            <th>IGST</th>
+            <th>Total</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody id="itemsBody">
+        <tr>
+            <td><input class="item-name" value="Tin roller coupling 2” 6 bolt"></td>
+            <td><input class="item-code" value="101"></td>
+            <td><input class="item-qty" value="2" type="number" step="0.01"></td>
+            <td><input class="item-rate" value="1600" type="number" step="0.01"></td>
+            <td><input class="item-taxable" readonly></td>
+            <td><input class="item-tax" value="18" type="number" step="0.01"></td>
+            <td><input class="item-igst" readonly></td>
+            <td><input class="item-total" readonly></td>
+            <td><button class="delete-btn" onclick="deleteRow(this)">X</button></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="btn-wrapper" style="margin-top:10px;">
+        <button type="button" onclick="addRow()">+ Add Item</button>
+    </div>
+
+    <div class="totals">
+        <p><span>Total Taxable:</span> <span id="totalTaxable">0.00</span></p>
+        <p><span>Total CGST:</span> <span id="totalCgst">0.00</span></p>
+        <p><span>Total SGST:</span> <span id="totalSgst">0.00</span></p>
+        <p><span>Total IGST:</span> <span id="totalIgst">0.00</span></p>
+        <p class="grand-total"><span>Grand Total:</span> <span id="grandTotal">0.00</span></p>
+    </div>
+
+    <div class="bank-details">
+        <label>Bank Name:</label>
+        <input id="bankName" value="Union Bank of India">
+        <label>Branch:</label>
+        <input id="bankBranch" value="Peelamedu">
+        <label>Account No:</label>
+        <input id="bankAccount" value="305721010000094">
+        <label>IFSC Code:</label>
+        <input id="bankIfsc" value="UBIN0930571">
+    </div>
+
+    <label>Amount in Words:</label>
+    <textarea id="inWords" readonly></textarea>
+
+    <div class="btn-wrapper">
+        <button id="generatePdf">Generate PDF</button>
+    </div>
+</div>
+
+<script>
+// Convert numbers to words
+function numberToWords(num) {
+    const a = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten',
+               'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen',
+               'Seventeen', 'Eighteen', 'Nineteen'];
+    const b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+    const inWords = (n) => {
+        if (n < 20) return a[n];
+        if (n < 100) return b[Math.floor(n / 10)] + (n % 10 ? " " + a[n % 10] : "");
+        if (n < 1000) return a[Math.floor(n / 100)] + " Hundred" + (n % 100 ? " " + inWords(n % 100) : "");
+        if (n < 100000) return inWords(Math.floor(n / 1000)) + " Thousand" + (n % 1000 ? " " + inWords(n % 1000) : "");
+        if (n < 10000000) return inWords(Math.floor(n / 100000)) + " Lakh" + (n % 100000 ? " " + inWords(n % 100000) : "");
+        return inWords(Math.floor(n / 10000000)) + " Crore" + (n % 10000000 ? " " + inWords(n % 10000000) : "");
+    };
+    return inWords(num) + " Rupees Only";
+}
+
+// Calculate totals with IGST only
+function calculateTotals() {
+    let totalTaxable = 0, totalIgst = 0, grandTotal = 0;
+
+    document.querySelectorAll("#itemsBody tr").forEach(row => {
+        let qty = parseFloat(row.querySelector(".item-qty").value) || 0;
+        let rate = parseFloat(row.querySelector(".item-rate").value) || 0;
+        let taxPercent = parseFloat(row.querySelector(".item-tax").value) || 0;
+
+        let taxable = qty * rate;
+        let igst = taxable * (taxPercent / 100);
+        let total = taxable + igst;
+
+        row.querySelector(".item-taxable").value = taxable.toFixed(2);
+        row.querySelector(".item-igst").value = igst.toFixed(2);
+        row.querySelector(".item-total").value = total.toFixed(2);
+
+        totalTaxable += taxable;
+        totalIgst += igst;
+        grandTotal += total;
+    });
+
+    document.getElementById("totalTaxable").textContent = totalTaxable.toFixed(2);
+    document.getElementById("totalIgst").textContent = totalIgst.toFixed(2);
+    // Set CGST and SGST to 0 since they are removed
+    document.getElementById("totalCgst").textContent = "0.00";
+    document.getElementById("totalSgst").textContent = "0.00";
+
+    document.getElementById("grandTotal").textContent = grandTotal.toFixed(2);
+
+    document.getElementById("inWords").value = numberToWords(Math.round(grandTotal));
+}
+
+// Add a new row with IGST column only
+function addRow() {
+    const tbody = document.getElementById('itemsBody');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td><input class="item-name"></td>
+        <td><input class="item-code" type="number" step="0.01"></td>
+        <td><input class="item-qty" type="number" step="0.01"></td>
+        <td><input class="item-rate" type="number" step="0.01"></td>
+        <td><input class="item-taxable" type="number" step="0.01" readonly></td>
+        <td><input class="item-tax" type="number" step="0.01"></td>
+        <td><input class="item-igst" type="number" step="0.01" readonly></td>
+        <td><input class="item-total" type="number" step="0.01" readonly></td>
+        <td><button class="delete-btn" onclick="deleteRow(this)">X</button></td>
+    `;
+    tbody.appendChild(tr);
+
+    tr.querySelectorAll("input").forEach(input => {
+        input.addEventListener("input", calculateTotals);
+    });
+}
+
+// Delete a row
+function deleteRow(btn) {
+    btn.parentElement.parentElement.remove();
+    calculateTotals();
+}
+
+// PDF generation with IGST only
+document.getElementById('generatePdf').addEventListener('click', async () => {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+    const leftMargin = 36;
+    let y = 40;
+
+    // Get references to input elements
+    const invoiceNo = document.getElementById('invoiceNo');
+    const invoiceDate = document.getElementById('invoiceDate');
+    const billTo = document.getElementById('billTo');
+    const shipTo = document.getElementById('shipTo');
+    const transportNo = document.getElementById('transport');
+    const vehicleNo = document.getElementById('vehicleNo');
+    const purchaseOrderNo = document.getElementById('purchaseOrderNo');
+    const deliveryChallanNo = document.getElementById('deliveryChallanNo');
+    const totalTaxable = document.getElementById('totalTaxable');
+    const totalIgst = document.getElementById('totalIgst');
+    const grandTotal = document.getElementById('grandTotal');
+    const inWords = document.getElementById('inWords');
+    const bankName = document.getElementById('bankName');
+    const bankBranch = document.getElementById('bankBranch');
+    const bankAccount = document.getElementById('bankAccount');
+    const bankIfsc = document.getElementById('bankIfsc');
+
+    const copyType = document.querySelector('input[name="copyType"]:checked').value;
+
+    doc.setFontSize(16).setFont(undefined, 'bold');
+    doc.text("PERFORMA INVOICE", doc.internal.pageSize.width / 2, y, { align: 'center' });
+
+    doc.setFontSize(10).setFont(undefined, 'italic');
+    doc.text(copyType, doc.internal.pageSize.width - 80, y);
+
+    y += 20;
+    doc.setFontSize(14).setFont(undefined, 'bold').text("RAJA MACHINE WORKS", leftMargin, y);
+    doc.setFontSize(10).setFont(undefined, 'normal').text("19, M.G.R. STREET, RATHINAPURI, COIMBATORE-641 027.", leftMargin, y+14);
+    doc.text("MOBILE: +91 97900 33522", leftMargin, y+28);
+    doc.text("GSTIN: 33BVTPR8952H1ZR", leftMargin, y+42);
+
+    const metaX = 400;
+    doc.setFontSize(9);
+    doc.text(`Invoice No: ${invoiceNo.value}`, metaX, y);
+    doc.text(`Date: ${invoiceDate.value}`, metaX, y+12);
+
+    y += 60;
+
+const billedLines = doc.splitTextToSize(billTo.value, 250);
+const shippedLines = doc.splitTextToSize(shipTo.value, 250);
+
+// Calculate height needed for billedTo box
+const billedHeight = billedLines.length * 9 + 20; // 9 = line height approx, + some padding
+const shippedHeight = shippedLines.length * 9 + 20;
+
+const boxHeight = Math.max(billedHeight, shippedHeight);
+
+// Draw boxes dynamically
+doc.setLineWidth(0.7);
+doc.rect(leftMargin, y, 260, boxHeight);
+doc.rect(leftMargin + 270, y, 260, boxHeight);
+
+// Add text
+doc.setFontSize(9).setFont(undefined, 'bold').text("Billed To:", leftMargin + 4, y + 12);
+doc.setFont(undefined, 'normal').setFontSize(8).text(billedLines, leftMargin + 4, y + 26);
+
+doc.setFontSize(9).setFont(undefined, 'bold').text("Shipped To:", leftMargin + 274, y + 12);
+doc.setFont(undefined, 'normal').setFontSize(8).text(shippedLines, leftMargin + 274, y + 26);
+
+// Now y + boxHeight is the bottom of the boxes if you want to continue drawing below
+
+    y += 80;
+doc.setLineWidth(0.7);
+
+// Draw single box on the right side (same size as "Shipped To")
+doc.rect(leftMargin + 270, y, 260, 70);
+
+const lineHeight = 14;
+let currentY = y + 12;
+
+// Transport No
+doc.setFontSize(9).setFont(undefined, 'bold').text("Transport No:", leftMargin + 274, currentY);
+doc.setFont(undefined, 'normal').text(transport.value, leftMargin + 340, currentY);
+
+currentY += lineHeight;
+
+// Vehicle No
+doc.setFontSize(9).setFont(undefined, 'bold').text("Vehicle No:", leftMargin + 274, currentY);
+doc.setFont(undefined, 'normal').text(vehicleNo.value, leftMargin + 340, currentY);
+
+currentY += lineHeight;
+
+// Purchase Order No
+doc.setFontSize(9).setFont(undefined, 'bold').text("Purchase Order No:", leftMargin + 274, currentY);
+doc.setFont(undefined, 'normal').text(purchaseOrderNo.value, leftMargin + 360, currentY);
+
+currentY += lineHeight;
+
+// Delivery Challan No
+doc.setFontSize(9).setFont(undefined, 'bold').text("Delivery Challan No:", leftMargin + 274, currentY);
+doc.setFont(undefined, 'normal').text(deliveryChallanNo.value, leftMargin + 360, currentY);
+
+    y += 60;
+    const rows = [...document.querySelectorAll('#itemsBody tr')].map((tr, i) => [
+        i+1,
+        tr.querySelector('.item-name').value,
+        tr.querySelector('.item-code').value,
+        tr.querySelector('.item-qty').value,
+        tr.querySelector('.item-rate').value,
+        tr.querySelector('.item-taxable').value,
+        tr.querySelector('.item-tax').value + '%',
+        tr.querySelector('.item-igst').value,
+        tr.querySelector('.item-total').value
+    ]);
+    doc.autoTable({
+        startY: y + 30,
+        head: [['Sl.No','Description of Goods','HSN/SAC Code','Qty','Rate','Taxable Value','Tax %','IGST','Total']],
+        body: rows,
+        styles: { fontSize: 8, cellPadding: 4 },
+        headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], halign: 'center', lineWidth: 0.5, lineColor: [0,0,0] },
+        bodyStyles: { lineWidth: 0.5, lineColor: [0,0,0] },
+    });
+
+    let finalY = doc.lastAutoTable.finalY + 10;
+    const rightX = 420;
+    doc.setFontSize(9).text("Total Taxable Value", rightX, finalY);
+    doc.text(totalTaxable.textContent, rightX+120, finalY, { align: 'right' });
+    finalY += 12;
+
+    doc.text("Add: IGST", rightX, finalY);
+    doc.text(totalIgst.textContent, rightX+120, finalY, { align: 'right' });
+    finalY += 14;
+
+    doc.setFont(undefined, 'bold').setFontSize(10).text("Grand Total", rightX, finalY);
+    doc.text(grandTotal.textContent, rightX+120, finalY, { align: 'right' });
+
+    finalY += 20;
+    doc.setFont(undefined, 'normal').setFontSize(9);
+    doc.text("Amount in Words:", leftMargin, finalY);
+    doc.text(inWords.value, leftMargin+100, finalY);
+
+    finalY += 20;
+    doc.setFont(undefined, 'bold').text("Bank Details:", leftMargin, finalY);
+    doc.setFont(undefined, 'normal').setFontSize(9);
+    doc.text(`Bank Name: ${bankName.value}`, leftMargin, finalY+12);
+    doc.text(`Branch: ${bankBranch.value}`, leftMargin, finalY+24);
+    doc.text(`Account No: ${bankAccount.value}`, leftMargin, finalY+36);
+    doc.text(`IFSC Code: ${bankIfsc.value}`, leftMargin, finalY+48);
+
+// Company text
+doc.setFont(undefined, 'bold').setFontSize(10)
+.text("FOR: RAJA MACHINE WORKS", rightX, finalY + 10);
+
+// Stamp image
+//doc.addImage(stampImg, 'PNG', rightX, finalY + 20, 80, 80);
+
+// Signature
+doc.setFontSize(10).setFont(undefined, 'normal')
+.text("Authorised Signature", rightX, finalY + 105);
+
+   // Move Y below the last bank detail line, add some spacing
+let termsY = finalY + 70;  // 48 + 22 (some gap)
+
+// Set font size and bold for the heading
+doc.setFontSize(9);
+doc.setFont(undefined, 'bold');
+doc.text("Terms and Conditions:", leftMargin, termsY);
+
+// Prepare terms text
+doc.setFont(undefined, 'normal').setFontSize(8);
+const termsText = 
+  `1. Goods once sold will not be taken back or exchanged
+2. Seller is not responsible for any loss or damage of goods in transit
+3. Buyer undertakes to submit prescribed ST declaration to sender on demand.
+Dispute if any will be subject to seller court jurisdiction.`;
+
+// Split terms text to fit width
+const pageWidth = doc.internal.pageSize.width;
+const margin = 15;
+const maxTextWidth = pageWidth - margin * 2;
+const splitTerms = doc.splitTextToSize(termsText, maxTextWidth);
+
+// Add terms lines below heading with some line spacing
+doc.text(splitTerms, leftMargin, termsY + 8);
+
+    // Save PDF only after attempting to add the image
+    // AUTO SAVE COMPANY TO LEDGER
+let companies = JSON.parse(localStorage.getItem("companies")||"[]");
+
+let companyName = document.getElementById("companyName").value;
+let billText = document.getElementById("billTo").value;
+
+if(companyName){
+
+let exists = companies.find(c => c.name.toLowerCase() === companyName.toLowerCase());
+
+if(!exists){
+
+// Extract lines
+let lines = billText.split("\n");
+
+companies.push({
+name: companyName,
+address: lines[1] || "",
+mobile: lines[2]?.replace("Mobile:","") || "",
+gst: document.getElementById("companyGST").value || ""
+});
+
+localStorage.setItem("companies", JSON.stringify(companies));
+}
+}
+
+doc.save('Raja_Machine_Works_Invoice.pdf');
+// 🔥 Increase Invoice Count
+let count = parseInt(localStorage.getItem("invoiceCount") || 0);
+localStorage.setItem("invoiceCount", count + 1);
+
+let activities = JSON.parse(localStorage.getItem("activities") || "[]");
+
+activities.unshift({
+date: new Date().toLocaleDateString(),
+type: "Invoice",
+details: "Invoice No: " + document.getElementById("invoiceNo").value
+});
+
+localStorage.setItem("activities", JSON.stringify(activities));
+});
+
+
+// Setup event listeners
+document.querySelectorAll("#itemsBody input").forEach(input => input.addEventListener("input", calculateTotals));
+document.getElementById("invoiceNo").addEventListener("input", calculateTotals);
+document.getElementById("invoiceDate").addEventListener("input", calculateTotals);
+document.getElementById("billTo").addEventListener("input", calculateTotals);
+document.getElementById("shipTo").addEventListener("input", calculateTotals);
+document.getElementById("transport").addEventListener("input", calculateTotals);
+document.getElementById("vehicleNo").addEventListener("input", calculateTotals);
+document.getElementById("bankName").addEventListener("input", calculateTotals);
+document.getElementById("bankBranch").addEventListener("input", calculateTotals);
+document.getElementById("bankAccount").addEventListener("input", calculateTotals);
+document.getElementById("bankIfsc").addEventListener("input", calculateTotals);
+
+// Calculate initially
+calculateTotals();
+// AUTO FILL COMPANY DETAILS
+document.getElementById("companyName").addEventListener("input", function(){
+
+let name = this.value.toLowerCase();
+let companies = JSON.parse(localStorage.getItem("companies")||"[]");
+
+let found = companies.find(c => c.name.toLowerCase() === name);
+
+if(found){
+
+// Fill GST
+document.getElementById("companyGST").value = found.gst || "";
+
+// Fill bill to
+let text =
+found.name + "\n" +
+found.address + "\n" +
+"Mobile: " + found.mobile + "\n" +
+"GST: " + found.gst;
+
+document.getElementById("billTo").value = text;
+document.getElementById("shipTo").value = text;
+
+}
+});
+</script>
+
+</body>
+</html>

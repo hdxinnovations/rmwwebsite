@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delivery Challan</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    font-family: Arial, sans-serif;
+    background:#f7f7f7;
+    padding:20px;
+    margin:0;
+}
+
+.challan-container{
+    background:white;
+    padding:15px;
+    border:1px solid #000;
+    max-width:900px;
+    width:100%;
+    margin:auto;
+}
+
+.header{
+    text-align:center;
+    border-bottom:2px solid black;
+    padding-bottom:5px;
+}
+
+.title{
+    background:yellow;
+    padding:2px 8px;
+    border:1px solid black;
+    display:inline-block;
+    margin-bottom:5px;
+}
+
+h2{
+    margin:5px 0;
+}
+
+.info-table,
+.items-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+}
+
+.info-table td{
+    border:1px solid #000;
+    padding:6px;
+    font-size:14px;
+}
+
+.info-table input{
+    border:none;
+    width:100%;
+    font-size:14px;
+}
+
+.items-table th,
+.items-table td{
+    border:1px solid #000;
+    padding:6px;
+    text-align:center;
+    font-size:14px;
+}
+
+.items-table td[contenteditable="true"]{
+    background:#fdfdfd;
+}
+
+.buttons{
+    text-align:center;
+    margin-top:15px;
+}
+
+button{
+    padding:8px 12px;
+    margin:5px;
+    border:none;
+    background:#007bff;
+    color:white;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0056b3;
+}
+
+/* Signature section */
+.signature-section{
+    margin-top:40px;
+    text-align:right;
+}
+
+.for-text{
+    font-size:14px;
+    font-weight:bold;
+}
+
+.stamp-space{
+    width:120px;
+    height:100px;
+    display:inline-block;
+}
+
+.auth-sign{
+    font-size:14px;
+    margin-top:5px;
+}
+
+/* Responsive */
+@media(max-width:768px){
+    .info-table td,
+    .items-table th,
+    .items-table td{
+        font-size:12px;
+        padding:4px;
+    }
+
+    .challan-container{
+        padding:10px;
+    }
+}
+
+@media print{
+    .delete-btn,
+    .buttons{
+        display:none !important;
+    }
+}
+
+.back-btn{
+display:inline-block;
+margin-bottom:15px;
+background:#111827;
+color:#fff;
+padding:8px 14px;
+border-radius:6px;
+text-decoration:none;
+font-size:14px;
+}
+
+.back-btn:hover{
+background:#2563eb;
+}
+</style>
+
+<!-- Load Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+</head>
+<body>
+<a href="invoice-portal.html" class="back-btn">← Back to Home</a>
+<div id="challan" class="challan-container">
+
+    <div class="header">
+        <div class="title">DELIVERY CHALLAN</div>
+        <h2>RAJA MACHINE WORKS</h2>
+        <p>
+            19, M.G.R. STREET, RATHINAPURI, <b>COIMBATORE</b> - 641 027.<br>
+            <b>GST NO: 33BVTPR8952H1ZR</b><br>
+            Ph: +91 97900 33522
+        </p>
+    </div>
+
+    <table class="info-table">
+        <tr>
+            <td colspan="2">To: <input type="text"></td>
+            <td>Address: <input type="text"></td>
+        </tr>
+        <tr>
+            <td>Challan No.: <input type="text"></td>
+            <td colspan="2">Date: <input type="date" id="invoiceDate"></td>
+        </tr>
+        <tr>
+            <td>Vehicle No.: <input type="text"></td>
+            <td colspan="2">Driver's Name: <input type="text"></td>
+        </tr>
+        <tr>
+            <td colspan="3">Time of Departure: <input type="text"></td>
+        </tr>
+    </table>
+
+    <table class="items-table">
+        <thead>
+            <tr>
+                <th>Sl. No.</th>
+                <th>Item Name</th>
+                <th>HSN/SAC Code</th>
+                <th>Qty. per Pack</th>
+                <th>Total Qty.</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td contenteditable="true">1</td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td><button class="delete-btn" onclick="deleteRow(this)">🗑</button></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Signature -->
+    <div class="signature-section">
+        <p class="for-text">FOR: RAJA MACHINE WORKS</p>
+        <div class="stamp-space"></div>
+        <p class="auth-sign">Authorised Signature</p>
+    </div>
+
+</div>
+
+<div class="buttons">
+    <button onclick="addRow()">+ Add Row</button>
+    <button onclick="downloadPDF()">Download as PDF</button>
+</div>
+
+<script>
+
+/* Auto today date */
+window.addEventListener("DOMContentLoaded",()=>{
+    const today = new Date().toISOString().split("T")[0];
+    document.getElementById("invoiceDate").value = today;
+});
+
+/* Add row */
+function addRow(){
+    const tbody=document.querySelector('.items-table tbody');
+    const rowCount=tbody.rows.length+1;
+    const tr=document.createElement('tr');
+
+    for(let i=0;i<6;i++){
+        const td=document.createElement('td');
+        if(i<5){
+            td.contentEditable='true';
+            td.innerText=(i===0)?rowCount:'';
+        }else{
+            td.innerHTML='<button class="delete-btn" onclick="deleteRow(this)">🗑</button>';
+        }
+        tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+}
+
+/* Delete row */
+function deleteRow(btn){
+    btn.closest('tr').remove();
+    document.querySelectorAll('.items-table tbody tr').forEach((row,i)=>{
+        row.cells[0].innerText=i+1;
+    });
+}
+
+/* Download PDF */
+async function downloadPDF(){
+    const challan=document.getElementById('challan');
+    const clone=challan.cloneNode(true);
+
+    clone.querySelectorAll('input').forEach(inp=>{
+        const span=document.createElement('span');
+        span.textContent=inp.value||'';
+        inp.parentNode.replaceChild(span,inp);
+    });
+
+    clone.querySelectorAll('.delete-btn').forEach(btn=>btn.remove());
+
+    const wrapper=document.createElement('div');
+    wrapper.style.position='absolute';
+    wrapper.style.left='-9999px';
+    wrapper.appendChild(clone);
+    document.body.appendChild(wrapper);
+
+    const canvas=await html2canvas(clone,{scale:2,useCORS:true});
+    const imgData=canvas.toDataURL('image/png');
+
+    const {jsPDF}=window.jspdf;
+    const pdf=new jsPDF('p','mm','a4');
+    const pdfWidth=pdf.internal.pageSize.getWidth();
+    const pdfHeight=(canvas.height*pdfWidth)/canvas.width;
+
+    pdf.addImage(imgData,'PNG',0,0,pdfWidth,pdfHeight);
+    pdf.save('delivery_challan.pdf');
+
+    // 🔥 Increase Delivery Challan Count
+let count = parseInt(localStorage.getItem("challanCount") || 0);
+localStorage.setItem("challanCount", count + 1);
+
+let activities = JSON.parse(localStorage.getItem("activities") || "[]");
+
+activities.unshift({
+date: new Date().toLocaleDateString(),
+type: "Challan",
+details: "Challan Generated"
+});
+
+localStorage.setItem("activities", JSON.stringify(activities));
+
+    document.body.removeChild(wrapper);
+}
+
+</script>
+</body>
+</html>

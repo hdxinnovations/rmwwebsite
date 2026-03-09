@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Buying Cost - RMW ERP</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI",Arial;}
+body{background:#0b0f19;color:#fff;display:flex;min-height:100vh}
+
+/* SIDEBAR */
+.sidebar{
+width:240px;
+background:#111827;
+padding:20px;
+}
+.sidebar a{
+display:block;
+padding:12px;
+color:#ccc;
+text-decoration:none;
+border-radius:6px;
+margin-bottom:6px;
+}
+.sidebar a:hover{background:#1f2937;color:#fff}
+
+/* MAIN */
+.main{flex:1;padding:25px}
+h1{margin-bottom:20px}
+
+/* FORM */
+.form{
+background:#111827;
+padding:20px;
+border-radius:10px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:15px;
+margin-bottom:20px;
+}
+
+input{
+padding:10px;
+border:none;
+border-radius:6px;
+}
+
+button{
+padding:10px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+.add{background:#16a34a;color:#fff}
+
+/* TABLE */
+table{
+width:100%;
+border-collapse:collapse;
+background:#111827;
+border-radius:10px;
+overflow:hidden;
+}
+
+th,td{
+padding:12px;
+border-bottom:1px solid #222;
+}
+
+.delete{background:#dc2626;color:#fff}
+
+/* TOTAL */
+.total-box{
+margin-top:20px;
+background:#111827;
+padding:20px;
+border-radius:10px;
+font-size:18px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+<h3>RMW ERP</h3>
+<a href="rmwerp.html">Dashboard</a>
+<a href="invoice-portal.html">Billing</a>
+<a href="index3.html">Delivery Challan</a>
+<!-- <a href="erp.html">ERP Panel</a>
+ <a href="#">Reports</a> -->
+<a href="products.html">Products</a>
+<a href="customers.html">Customers</a>
+<a href="expenses.html">Personal Expenses</a>
+<a href="product-buying.html">Product Expenses</a>
+<a href="employees.html">Employees Page</a>
+</div>
+
+<div class="main">
+<h1>Product Buying Cost</h1>
+
+<div class="form">
+<input type="date" id="date">
+<input type="text" id="supplier" placeholder="Supplier Name">
+<input type="text" id="product" placeholder="Product Name">
+<input type="number" id="qty" placeholder="Quantity">
+<input type="number" id="price" placeholder="Cost per piece">
+<input type="number" id="gst" placeholder="GST %">
+<button class="add" onclick="addPurchase()">Add</button>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Supplier</th>
+<th>Product</th>
+<th>Qty</th>
+<th>Price</th>
+<th>Subtotal</th>
+<th>GST %</th>
+<th>Total</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="purchaseTable"></tbody>
+</table>
+
+<div class="total-box">
+Monthly Buying Total: ₹<span id="monthlyTotal">0</span>
+</div>
+
+</div>
+
+<script>
+let purchases = JSON.parse(localStorage.getItem("purchases")||"[]");
+
+function save(){
+localStorage.setItem("purchases",JSON.stringify(purchases));
+render();
+}
+
+function addPurchase(){
+
+const date=document.getElementById("date").value;
+const supplier=document.getElementById("supplier").value;
+const product=document.getElementById("product").value;
+const qty=parseFloat(document.getElementById("qty").value);
+const price=parseFloat(document.getElementById("price").value);
+const gst=parseFloat(document.getElementById("gst").value)||0;
+
+if(!date || !qty || !price) return alert("Fill all required fields");
+
+const subtotal = qty * price;
+const gstAmount = subtotal * gst / 100;
+const total = subtotal + gstAmount;
+
+purchases.push({date,supplier,product,qty,price,subtotal,gst,total});
+save();
+
+document.getElementById("supplier").value="";
+document.getElementById("product").value="";
+document.getElementById("qty").value="";
+document.getElementById("price").value="";
+document.getElementById("gst").value="";
+}
+
+function del(i){
+purchases.splice(i,1);
+save();
+}
+
+function render(){
+
+let html="";
+let monthlyTotal=0;
+let currentMonth=new Date().getMonth();
+
+purchases.forEach((p,i)=>{
+
+html+=`
+<tr>
+<td>${p.date}</td>
+<td>${p.supplier}</td>
+<td>${p.product}</td>
+<td>${p.qty}</td>
+<td>₹${p.price}</td>
+<td>₹${p.subtotal}</td>
+<td>${p.gst}%</td>
+<td>₹${p.total}</td>
+<td><button class="delete" onclick="del(${i})">Delete</button></td>
+</tr>
+`;
+
+let pMonth=new Date(p.date).getMonth();
+if(pMonth===currentMonth) monthlyTotal+=p.total;
+
+});
+
+document.getElementById("purchaseTable").innerHTML=html;
+document.getElementById("monthlyTotal").innerText=monthlyTotal;
+}
+
+render();
+</script>
+
+</body>
+</html>
